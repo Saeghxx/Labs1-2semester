@@ -1,4 +1,3 @@
-//Timeout-based iterator
 async function iterateWithTimeout(iterator, timeoutSeconds) {
     const startTime = Date.now();
 
