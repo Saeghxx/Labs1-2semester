@@ -2,7 +2,7 @@
   "name": "labop1-2",
   "version": "1.0.0",
   "description": "Library for generators and timeout-based iterators",
-  "main": "src/index.js",
+  "main": "code/index.js",
   "author": "Retiznik Alina",
   "license": "MIT",
   "scripts": {

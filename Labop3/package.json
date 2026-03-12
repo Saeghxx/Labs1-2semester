@@ -1,0 +1,8 @@
+{
+  "name": "lab3-memoization",
+  "version": "1.0.0",
+  "main": "code/memoize.js",
+  "scripts": {
+    "start": "node examples/demo.js"
+  }
+}
