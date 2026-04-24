@@ -1,19 +1,15 @@
-// Task 3: Implementing a Memoization Function
-
 function memoize(fn, options = {}) {
-
     const cache = new Map();
+
     const maxSize = options.maxSize || Infinity;
     const eviction = options.eviction || "LRU";
     const ttl = options.ttl || 0;
     const customEvict = options.customEvict;
 
     function evictCache() {
-
         if (cache.size <= maxSize) return;
 
         if (eviction === "LRU") {
-
             let oldestKey;
             let oldestTime = Infinity;
 
@@ -25,9 +21,9 @@ function memoize(fn, options = {}) {
             }
 
             cache.delete(oldestKey);
+        }
 
-        } else if (eviction === "LFU") {
-
+        else if (eviction === "LFU") {
             let leastKey;
             let leastCount = Infinity;
 
@@ -39,9 +35,9 @@ function memoize(fn, options = {}) {
             }
 
             cache.delete(leastKey);
+        }
 
-        } else if (eviction === "TTL") {
-
+        else if (eviction === "TTL") {
             const now = Date.now();
 
             for (const [key, entry] of cache.entries()) {
@@ -49,9 +45,12 @@ function memoize(fn, options = {}) {
                     cache.delete(key);
                 }
             }
+        }
 
-        } else if (eviction === "custom" && typeof customEvict === "function") {
-
+        else if (
+            eviction === "custom" &&
+            typeof customEvict === "function"
+        ) {
             const keyToRemove = customEvict(cache);
 
             if (cache.has(keyToRemove)) {
@@ -61,12 +60,11 @@ function memoize(fn, options = {}) {
     }
 
     return function (...args) {
-
         const key = JSON.stringify(args);
 
         if (cache.has(key)) {
-
             const entry = cache.get(key);
+
             entry.timestamp = Date.now();
             entry.count += 1;
 

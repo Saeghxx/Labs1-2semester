@@ -20,3 +20,12 @@ iterateWithTimeout(gen, 5);
 - **Refactored project structure**: Standardized folder naming (moved to `examples/`).
 - **Dependency fixes**: Corrected module resolution paths in `demo.js`.
 - **NPM Integration**: Added and verified `start` scripts in `package.json`.
+
+## Author
+
+Alina Retiznik
+
+Igor Sikorsky Kyiv Polytechnic Institute (KPI)  
+Faculty of Informatics and Computer Engineering (FICE)
+Group: IM-54
+GitHub: @Saeghxx
