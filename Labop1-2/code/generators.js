@@ -1,9 +1,9 @@
-function* roundRobinGenerator(items) {
-    while (true) {
-        for (const item of items) {
-            yield item;
-        }
-    }
+function* roundRobinGenerator(arr) {
+  let i = 0;
+  while (true) {
+    yield arr[i % arr.length];
+    i++;
+  }
 }
 
 module.exports = { roundRobinGenerator };

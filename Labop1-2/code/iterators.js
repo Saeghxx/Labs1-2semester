@@ -1,16 +1,15 @@
-async function iterateWithTimeout(iterator, timeoutSeconds) {
-    const startTime = Date.now();
+function iterateWithTimeout(iterator, count, delay = 1000) {
+  let i = 0;
 
-    for (const value of iterator) {
-        const elapsed = Date.now() - startTime; 
-if (elapsed >= timeoutSeconds * 1000) break;
-
-        console.log(`Value: ${value}`); 
-
-        await new Promise(res => setTimeout(res, 500));
+  const interval = setInterval(() => {
+    if (i >= count) {
+      clearInterval(interval);
+      return;
     }
 
-    console.log("Timeout reached. Iteration stopped.");
+    console.log(iterator.next().value);
+    i++;
+  }, delay);
 }
 
 module.exports = { iterateWithTimeout };

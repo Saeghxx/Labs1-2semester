@@ -1,6 +1,5 @@
-const { roundRobinGenerator } = require("../code/generators");
-const { iterateWithTimeout } = require("../code/iterators");
+const { roundRobinGenerator, iterateWithTimeout } = require("../code/index.js");
 
-const letters = roundRobinGenerator(["A", "B", "C"]);
+const gen = roundRobinGenerator(["A", "B", "C"]);
 
-iterateWithTimeout(letters, 5);
+iterateWithTimeout(gen, 5, 500);

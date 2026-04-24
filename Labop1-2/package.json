@@ -5,7 +5,9 @@
   "main": "code/index.js",
   "author": "Retiznik Alina",
   "license": "MIT",
+  "type": "commonjs",
+
   "scripts": {
-    "start": "node examples/demo.js"
+  "start": "node examples/demo.js"
   }
 }
