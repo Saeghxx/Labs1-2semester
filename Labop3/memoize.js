@@ -4,10 +4,32 @@ function memoize(fn, options = {}) {
     const maxSize = options.maxSize || Infinity;
 
     function evictLRU() {
-        if (cache.size <= maxSize) return;
-
         const oldestKey = cache.keys().next().value;
         cache.delete(oldestKey);
+    }
+
+    function evictLFU() {
+        let leastKey;
+        let leastCount = Infinity;
+
+        for (const [key, entry] of cache.entries()) {
+            if (entry.count < leastCount) {
+                leastCount = entry.count;
+                leastKey = key;
+            }
+        }
+
+        cache.delete(leastKey);
+    }
+
+    function evict() {
+        if (cache.size <= maxSize) return;
+
+        if (options.eviction === "LFU") {
+            evictLFU();
+        } else {
+            evictLRU();
+        }
     }
 
     return function (...args) {
@@ -33,7 +55,7 @@ function memoize(fn, options = {}) {
             count: 1
         });
 
-        evictLRU();
+        evict();
 
         return result;
     };
