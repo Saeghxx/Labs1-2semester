@@ -5,7 +5,7 @@
 Library for working with generators and iterators.
 
 This project is part of Laboratory Work No. 2 and focuses on project structure, local dependency management, and library modularization for JavaScript generators and iterators.
-````
+
 ## Installation
 
 ```bash
