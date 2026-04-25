@@ -126,3 +126,5 @@ function filterPromise(arr, predicate, signal) {
     })();
   });
 }
+
+module.exports = { filterCallback, filterPromise };
