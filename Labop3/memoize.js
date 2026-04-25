@@ -1,3 +1,4 @@
+// Lab 3
 function memoize(fn, options = {}) {
     const cache = new Map();
 
