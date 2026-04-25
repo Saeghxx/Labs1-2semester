@@ -10,16 +10,7 @@ function memoize(fn, options = {}) {
         if (cache.size <= maxSize) return;
 
         if (eviction === "LRU") {
-            let oldestKey;
-            let oldestTime = Infinity;
-
-            for (const [key, entry] of cache.entries()) {
-                if (entry.timestamp < oldestTime) {
-                    oldestTime = entry.timestamp;
-                    oldestKey = key;
-                }
-            }
-
+            const oldestKey = cache.keys().next().value;
             cache.delete(oldestKey);
         }
 
@@ -45,6 +36,11 @@ function memoize(fn, options = {}) {
                     cache.delete(key);
                 }
             }
+
+            if (cache.size > maxSize) {
+                const oldestKey = cache.keys().next().value;
+                cache.delete(oldestKey);
+            }
         }
 
         else if (
@@ -62,11 +58,24 @@ function memoize(fn, options = {}) {
     return function (...args) {
         const key = JSON.stringify(args);
 
+        if (cache.has(key) && eviction === "TTL") {
+            const entry = cache.get(key);
+
+            if (Date.now() - entry.timestamp >= ttl) {
+                cache.delete(key);
+            }
+        }
+
         if (cache.has(key)) {
             const entry = cache.get(key);
 
             entry.timestamp = Date.now();
             entry.count += 1;
+
+            if (eviction === "LRU") {
+                cache.delete(key);
+                cache.set(key, entry);
+            }
 
             return entry.value;
         }
