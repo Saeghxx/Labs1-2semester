@@ -1,4 +1,4 @@
-# labop1-2
+# labop2
 
 Library for working with generators and iterators.
 
