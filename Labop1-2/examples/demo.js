@@ -1,4 +1,4 @@
-const { roundRobinGenerator, iterateWithTimeout } = require("../code/index.js");
+const { roundRobinGenerator, iterateWithTimeout } = require("labop1-2");
 
 const gen = roundRobinGenerator(["A", "B", "C"]);
 
