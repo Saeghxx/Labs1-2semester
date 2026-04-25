@@ -1,3 +1,4 @@
+// Lab 4
 class QueueItem {
   constructor(value, priority, order) {
     this.value = value;
