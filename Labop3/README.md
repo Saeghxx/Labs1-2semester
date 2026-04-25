@@ -13,31 +13,35 @@ The goal is to improve performance by avoiding redundant computations and managi
 The project contains a `memoize` function that:
 
 * caches function results based on input arguments
-* returns cached values for повторні виклики
-* supports configurable cache size
+* returns cached values for repeated calls
+* supports configurable cache size and eviction policies
 
-Cache key is created using `JSON.stringify(arguments)`.
+Cache keys are generated using `JSON.stringify(arguments)`.
 
 ---
 
 ## Cache Eviction Strategies
 
-* **LRU (Least Recently Used)** – removes the oldest unused entries
-* **LFU (Least Frequently Used)** – removes least accessed entries
-* **TTL (Time-Based Expiry)** – removes expired entries based on time
-* **Custom Policy** – user-defined eviction function
+* **LRU (Least Recently Used)** – removes the least recently used entries
+* **LFU (Least Frequently Used)** – removes the least frequently accessed entries
+* **TTL (Time-Based Expiry)** – removes cached entries after a configurable time limit
+* **Custom Policy** – allows users to define their own eviction logic
 
 ---
 
 ## Performance
 
-Cache automatically prunes entries when limit is reached to prevent excessive memory usage.
+The cache automatically removes unnecessary entries when the size limit is reached, helping prevent excessive memory consumption and improving efficiency.
 
 ---
 
 ## Usage
 
-The memoized function is created by wrapping a pure function using memoize(). After that, it can be called normally, and repeated calls with the same arguments return cached results instead of recalculating them.
+A memoized function is created by wrapping a pure function using `memoize()`.
+
+After that, the function can be called normally, and repeated calls with the same arguments return cached results instead of recalculating them.
+
+This significantly improves performance for expensive or frequently repeated operations.
 
 ---
 
@@ -45,7 +49,7 @@ The memoized function is created by wrapping a pure function using memoize(). Af
 
 Alina Retiznik
 
-Igor Sikorsky Kyiv Polytechnic Institute (KPI)  
-Faculty of Informatics and Computer Engineering (FICE)
-Group: IM-54
+Igor Sikorsky Kyiv Polytechnic Institute  
+Faculty of Informatics and Computer Engineering  
+Group: IM-54  
 GitHub: @Saeghxx
