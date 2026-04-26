@@ -27,12 +27,16 @@ const main = async (inputFilePath, signal) => {
       console.log(`>>> ${chunk}`);
     }
 
- console.log("DONE");
+    console.log("DONE");
   } catch (err) {
     cleanup();
     throw err;
   } finally {
     signal?.removeEventListener("abort", abortHandler);
     cleanup();
-    }
+  }
 };
+
+const controller = new AbortController();
+
+main("./mock-data.txt", controller.signal);
