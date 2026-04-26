@@ -1,5 +1,4 @@
-const { filterCallback } = require('./filter.js');
-const { filterPromise } = require('./filter.js');
+const { filterCallback, filterPromise, sleep } = require("./filter.js");
 
 const hetmans = [
   { name: "Bohdan Khmelnytsky", power: 95 },
@@ -9,16 +8,16 @@ const hetmans = [
   { name: "Ivan Vyhovsky", power: 80 }
 ];
 
-const strongHetmanCallback = (item, cb) => {
+function strongHetmanCallback(item, cb) {
   setTimeout(() => {
     cb(null, item.power >= 80);
   }, 60);
-};
+}
 
-const strongHetmanPromise = async (item) => {
+async function strongHetmanPromise(item) {
   await sleep(50);
   return item.power >= 80;
-};
+}
 
 console.log("\nCALLBACK DEMO");
 
@@ -44,35 +43,54 @@ console.log("\nPROMISE DEMO");
 
 const controller2 = new AbortController();
 
+filterPromise(
+  hetmans,
+  strongHetmanPromise,
+  controller2.signal
+)
+  .then((result) => {
+    console.log(
+      "Promise Result:",
+      result.map((h) => h.name)
+    );
+  })
+  .catch((err) => {
+    console.log("Error:", err.message);
+  });
+
+console.log("\nASYNC DEMO");
+
+const controller3 = new AbortController();
+
 (async () => {
   try {
     const result = await filterPromise(
       hetmans,
       strongHetmanPromise,
-      controller2.signal
+      controller3.signal
     );
 
     console.log(
-      "Elite Hetmans:",
+      "Async/Await Result:",
       result.map((h) => h.name)
     );
-  } catch (e) {
-    console.log("Error:", e.message);
+  } catch (err) {
+    console.log("Error:", err.message);
   }
 })();
 
 console.log("\nABORT DEMO");
 
-const controller3 = new AbortController();
+const controller4 = new AbortController();
 
 filterPromise(
   hetmans,
   strongHetmanPromise,
-  controller3.signal
+  controller4.signal
 )
   .then((result) => {
     console.log(
-      "Result:",
+      "Abort Result:",
       result.map((h) => h.name)
     );
   })
@@ -81,5 +99,6 @@ filterPromise(
   });
 
 setTimeout(() => {
-  controller3.abort();
-}, 80);
+  console.log("ABORT TRIGGERED");
+  controller4.abort();
+}, 10);

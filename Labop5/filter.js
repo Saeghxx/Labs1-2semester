@@ -12,7 +12,6 @@ function filterCallback(arr, predicate, cb, signal) {
   const timers = [];
   const results = new Map();
   let finished = false;
-  let aborted = signal.aborted;
 
   function cleanup() {
     timers.forEach(clearTimeout);
@@ -27,57 +26,57 @@ function filterCallback(arr, predicate, cb, signal) {
   }
 
   function onAbort() {
-    aborted = true;
     finish(new AbortError());
   }
 
   signal.addEventListener("abort", onAbort);
 
-  if (aborted) return finish(new AbortError());
+  if (signal.aborted) {
+    return finish(new AbortError());
+  }
 
-  let done = 0;
+  let completed = 0;
 
-  for (const [i, item] of arr.entries()) {
-    const t = setTimeout(() => {
-      if (aborted || finished) return;
+  for (const [index, item] of arr.entries()) {
+    const timer = setTimeout(() => {
+      if (finished) return;
 
-      predicate(item, (err, ok) => {
-        if (aborted || finished) return;
+      predicate(item, (err, passed) => {
+        if (finished) return;
 
-        if (err) return finish(err);
+        if (err) {
+          return finish(err);
+        }
 
-        if (ok) results.set(i, item);
+        if (passed) {
+          results.set(index, item);
+        }
 
-        done++;
+        completed++;
 
-        if (done === arr.length) {
+        if (completed === arr.length) {
           const ordered = [...results.entries()]
             .sort((a, b) => a[0] - b[0])
-            .map(([_, v]) => v);
+            .map(([_, value]) => value);
 
           finish(null, ordered);
         }
       });
     }, 0);
 
-    timers.push(t);
+    timers.push(timer);
   }
 }
+
 function filterPromise(arr, predicate, signal) {
   return new Promise((resolve, reject) => {
     const timers = [];
     const results = new Map();
     let finished = false;
-    let aborted = signal.aborted;
 
     function cleanup() {
       timers.forEach(clearTimeout);
       signal.removeEventListener("abort", onAbort);
-    }
-
-    function onAbort() {
-      aborted = true;
-      finish(new AbortError());
     }
 
     function finish(err, value) {
@@ -89,42 +88,48 @@ function filterPromise(arr, predicate, signal) {
       else resolve(value);
     }
 
+    function onAbort() {
+      finish(new AbortError());
+    }
+
     signal.addEventListener("abort", onAbort);
 
-    if (aborted) return finish(new AbortError());
+    if (signal.aborted) {
+      return finish(new AbortError());
+    }
 
-    let done = 0;
+    let completed = 0;
 
-    (async () => {
-      for (const [i, item] of arr.entries()) {
-        const t = setTimeout(async () => {
-          if (aborted || finished) return;
+    for (const [index, item] of arr.entries()) {
+      const timer = setTimeout(async () => {
+        if (finished) return;
 
-          try {
-            const ok = await predicate(item, i);
+        try {
+          const passed = await predicate(item, index);
 
-            if (aborted || finished) return;
+          if (finished) return;
 
-            if (ok) results.set(i, item);
-
-            done++;
-
-            if (done === arr.length) {
-              const ordered = [...results.entries()]
-                .sort((a, b) => a[0] - b[0])
-                .map(([_, v]) => v);
-
-              finish(null, ordered);
-            }
-          } catch (e) {
-            finish(e);
+          if (passed) {
+            results.set(index, item);
           }
-        }, 0);
 
-        timers.push(t);
-      }
-    })();
+          completed++;
+
+          if (completed === arr.length) {
+            const ordered = [...results.entries()]
+              .sort((a, b) => a[0] - b[0])
+              .map(([_, value]) => value);
+
+            finish(null, ordered);
+          }
+        } catch (err) {
+          finish(err);
+        }
+      }, 0);
+
+      timers.push(timer);
+    }
   });
 }
 
-module.exports = { filterCallback, filterPromise };
+module.exports = { filterCallback, filterPromise, sleep, AbortError };
