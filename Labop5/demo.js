@@ -71,7 +71,7 @@ const controller3 = new AbortController();
     );
 
     console.log(
-      "Async/Await Result:",
+      "Async Result:",
       result.map((h) => h.name)
     );
   } catch (err) {

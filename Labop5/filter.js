@@ -1,3 +1,4 @@
+//Lab
 class AbortError extends Error {
   constructor() {
     super("Operation aborted");
