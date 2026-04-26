@@ -1,3 +1,4 @@
+//Lab 6 
 const fs = require("fs");
 
 const main = async (inputFilePath, signal) => {
