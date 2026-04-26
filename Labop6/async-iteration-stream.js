@@ -20,4 +20,19 @@ const main = async (inputFilePath, signal) => {
 
   signal?.addEventListener("abort", abortHandler);
  
+  try {
+    for await (const chunk of readStream) {
+      if (signal?.aborted) break;
+
+      console.log(`>>> ${chunk}`);
+    }
+
+ console.log("DONE");
+  } catch (err) {
+    cleanup();
+    throw err;
+  } finally {
+    signal?.removeEventListener("abort", abortHandler);
+    cleanup();
+    }
 };
