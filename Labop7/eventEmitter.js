@@ -23,7 +23,11 @@ unsubscribe(event, callback) {
   if (!listeners || listeners.length === 0) return;
 
   for (const listener of listeners) {
-    listener(data);
-  }
+    try {
+      listener(data);
+     } catch (err) {
+      this.emitError(err);
+     }
+   }
  }
 }
