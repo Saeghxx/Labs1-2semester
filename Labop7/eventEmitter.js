@@ -27,7 +27,23 @@ unsubscribe(event, callback) {
       listener(data);
      } catch (err) {
       this.emitError(err);
-     }
-   }
- }
+    }
+  }
+}
+
+ emitError(error) {
+   const errorListeners = this.subscribers["error"];
+
+   if (errorListeners && errorListeners.length > 0) {
+     for (const listener of errorListeners) {
+       try {
+         listener(error);
+       } catch (e) {
+        console.error("Error listener failed:", e);
+       }
+      }
+    } else {
+     console.error("Unhandled emitter error:", error);
+    }
+  } 
 }
