@@ -17,4 +17,13 @@ unsubscribe(event, callback) {
     sub => sub !== callback
   );
  }
+
+ emit(event, data) {
+  const listeners = this.subscribers[event];
+  if (!listeners || listeners.length === 0) return;
+
+  for (const listener of listeners) {
+    listener(data);
+  }
+ }
 }
