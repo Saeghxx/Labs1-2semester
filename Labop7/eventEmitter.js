@@ -47,3 +47,5 @@ unsubscribe(event, callback) {
     }
   } 
 }
+
+module.exports = EventEmitter;
