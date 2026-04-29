@@ -6,11 +6,13 @@ function memoize(fn, options = {}) {
     const ttl = options.ttl || 0;
     const customEvict = options.customEvict;
 
+    // LRU remove
     function evictLRU() {
         const oldestKey = cache.keys().next().value;
         cache.delete(oldestKey);
     }
 
+    // LFU remove
     function evictLFU() {
         let leastKey;
         let leastCount = Infinity;
@@ -25,6 +27,7 @@ function memoize(fn, options = {}) {
         cache.delete(leastKey);
     }
 
+    // choose eviction strategy
     function evict() {
         if (cache.size <= maxSize) return;
 
@@ -45,6 +48,7 @@ function memoize(fn, options = {}) {
             if (ttl > 0 && Date.now() - entry.timestamp >= ttl) {
                 cache.delete(key);
             } else {
+                // refresh for LRU
                 cache.delete(key);
                 cache.set(key, entry);
 
@@ -55,6 +59,7 @@ function memoize(fn, options = {}) {
             }
         }
 
+        // execute original function
         const result = fn(...args);
 
         cache.set(key, {
@@ -65,6 +70,7 @@ function memoize(fn, options = {}) {
 
         evict();
 
+        // custom eviction
         if (
             options.eviction === "custom" &&
             typeof customEvict === "function"
