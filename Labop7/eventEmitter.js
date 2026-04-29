@@ -1,3 +1,4 @@
+//Lab 7
 class EventEmitter {
   constructor() {
     this.subscribers = {};
