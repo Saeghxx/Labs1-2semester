@@ -1,4 +1,3 @@
-```md
 # Lab 7: Reactive Communication with EventEmitter
 
 ## Task Description
