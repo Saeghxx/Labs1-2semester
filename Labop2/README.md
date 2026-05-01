@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 ````md
+=======
+>>>>>>> b7923e64db9f5d7ac75c57aacf6c09e94b9056f9
 # labop2
 
 Library for working with generators and iterators.
