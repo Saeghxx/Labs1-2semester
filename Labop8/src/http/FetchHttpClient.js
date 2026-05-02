@@ -8,12 +8,11 @@ export class FetchHttpClient extends HttpClient {
       body: req.body ? JSON.stringify(req.body) : undefined,
     });
 
-    if (!res.ok) {
-      const error = new Error("HTTP Error");
-      error.status = res.status;
-      throw error;
-    }
+    const data = await res.json();
 
-    return res.json();
+    return {
+      status: res.status,
+      data,
+    };
   }
 }
