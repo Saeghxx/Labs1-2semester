@@ -1,4 +1,7 @@
 {
+  "name": "labop2-demo",
+  "version": "1.0.0",
+  "private": true,
   "dependencies": {
     "labop2": "file:../lib/labop2-1.0.0.tgz"
   }
