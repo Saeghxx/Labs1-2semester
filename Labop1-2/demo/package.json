@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "labop2": "file:../lib/labop2-1.0.0.tgz"
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "name": "labop1-2-example",
-  "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "labop1-2": "file:.."
-  }
-}
