@@ -1,0 +1,13 @@
+{
+  "name": "labop8",
+  "version": "1.0.0",
+  "description": "Authentication Proxy Lab",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0"
+  }
+}
