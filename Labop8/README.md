@@ -1,4 +1,4 @@
-```md
+
 # Lab 8: Authentication Proxy (Proxy + DI)
 
 ## Description
